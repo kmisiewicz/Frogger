@@ -91,6 +91,11 @@ public class PlayerBehaviour : MonoBehaviour
         {
             lives = 3;
             GameController.instance.ResetAll();
+            foreach (GameObject o in spawnedHappyFrogs)
+            {
+                Destroy(o);
+            }
+            spawnedHappyFrogs.Clear();
         }
         GameController.instance.ToggleDeathScreen();
         yield return new WaitForSeconds(0.5f);
