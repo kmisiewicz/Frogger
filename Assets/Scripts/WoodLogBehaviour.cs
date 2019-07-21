@@ -6,17 +6,59 @@ public class WoodLogBehaviour : MonoBehaviour
 {
     [Tooltip("Prędkość kłody.")]
     public float speed;
+    [Tooltip("Czas, co jaki istnieje możliwość zanurzenia w sekundach.")]
+    public float drownCheckInterval = 1.0f;
+    [Tooltip("Prawdopodobieństwo zanurzenia.")][Range(0.0f, 1.0f)]
+    public float drownFactor = 0.4f;
+    [Tooltip("Czas, jaki kłoda jest pod wodą.")]
+    public float drownTime = 1.0f;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool underwater = false;
+    private Collider2D ground;
+    private Animator anim;
+    
+    private void Start()
     {
-        
-    }
+        ground = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
 
-    // Update is called once per frame
-    void Update()
+        InvokeRepeating("Drown", drownCheckInterval, drownCheckInterval);
+    }
+    
+    private void Update()
     {
         transform.Translate(speed * Time.deltaTime, 0, 0);
+    }
+
+    private void Drown()
+    {
+        if(!underwater && UnityEngine.Random.value < drownFactor)
+        {
+            anim.SetBool("Drown", true);
+        }
+    }
+
+    private void Undrown()
+    {
+        if(underwater)
+        {
+            anim.SetBool("Drown", false);
+        }
+    }
+
+    private void ToggleCollider()
+    {
+        ground.enabled = !ground.enabled;
+        if(underwater)
+        {
+            Debug.Log(1);
+            Invoke("Undrown", drownTime);
+        }
+    }
+
+    private void TriggerDrownAbility()
+    {
+        underwater = !underwater;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

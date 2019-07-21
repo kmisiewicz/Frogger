@@ -53,6 +53,7 @@ public class RoadBehaviour : MonoBehaviour
                 }
                 else
                 {
+                    c.GetComponent<SpriteRenderer>().flipX = true;
                     c.transform.position = new Vector3(15, lanesY[i], 0);
                 }
                 c.GetComponent<CarBehaviour>().speed = speeds[i];

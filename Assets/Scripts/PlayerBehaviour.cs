@@ -10,6 +10,8 @@ public class PlayerBehaviour : MonoBehaviour
     public GameObject happyPepe;
 
     private Rigidbody2D rb;
+    private ParticleSystem deathParticle;
+    private SpriteRenderer sprite;
     private Vector2 respawnPosition;
     private bool movementLocked = false;
     public bool MovementLocked { get { return movementLocked; } }
@@ -27,6 +29,8 @@ public class PlayerBehaviour : MonoBehaviour
         respawnPosition = transform.position;
         collider = GetComponent<Collider2D>();
         spawnedHappyFrogs = new List<GameObject>();
+        deathParticle = GetComponent<ParticleSystem>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -77,6 +81,8 @@ public class PlayerBehaviour : MonoBehaviour
 
     private IEnumerator DeathAndRespawn()
     {
+        deathParticle.Play();
+        sprite.enabled = false;
         lives--;
         GameController.instance.UpdateLives(lives);
         rb.velocity = Vector2.zero;
@@ -97,6 +103,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
             spawnedHappyFrogs.Clear();
         }
+        sprite.enabled = true;
         GameController.instance.ToggleDeathScreen();
         yield return new WaitForSeconds(0.5f);
         movementLocked = false;

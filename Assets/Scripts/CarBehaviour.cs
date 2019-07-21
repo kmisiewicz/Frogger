@@ -6,11 +6,13 @@ public class CarBehaviour : MonoBehaviour
 {
     [Tooltip("Prędkość pojazdu.")]
     public float speed;
+    [Tooltip("Tablica sprite'ów.")]
+    public Sprite[] sprites;
 
     // Start is called before the first frame update
     void Start()
     {
-        //GetComponent<SpriteRenderer>().color = new Color(Random.Range(0.5f, 1), Random.Range(0.5f, 1), Random.Range(0.5f, 1));
+        GetComponent<SpriteRenderer>().sprite = sprites[UnityEngine.Random.Range(0, sprites.Length)];
     }
 
     // Update is called once per frame

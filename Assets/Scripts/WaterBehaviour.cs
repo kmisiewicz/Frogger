@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class WaterBehaviour : MonoBehaviour
 {
-    [Tooltip("Prefab kłody.")]
-    public GameObject woodLog;
+    [Tooltip("Prefaby kłód (4).")]
+    public GameObject[] woodLog;
     [Tooltip("Międzyczasy spawnu kłód (4).")]
     public float[] timesBetweenSpawns = new float[4];
     [Tooltip("Prędkości kłód w liniach (4).")]
@@ -36,7 +36,7 @@ public class WaterBehaviour : MonoBehaviour
             if (canSpawnInLane[i])
             {
                 
-                GameObject c = Instantiate(woodLog, new Vector3(0, 0, 0), transform.rotation);
+                GameObject c = Instantiate(woodLog[i], new Vector3(0, 0, 0), transform.rotation);
                 if (speeds[i] > 0)
                 {
                     c.transform.position = new Vector3(-15, lanesY[i], 0);
@@ -45,7 +45,7 @@ public class WaterBehaviour : MonoBehaviour
                 {
                     c.transform.position = new Vector3(15, lanesY[i], 0);
                 }
-                c.transform.localScale = new Vector3(lengths[i], 0.8f, 1);
+                //c.transform.localScale = new Vector3(lengths[i], 0.8f, 1);
                 c.GetComponent<WoodLogBehaviour>().speed = speeds[i];
                 canSpawnInLane[i] = false;
                 StartCoroutine(WaitForSpawn(i));
@@ -82,6 +82,7 @@ public class WaterBehaviour : MonoBehaviour
 
     private void OnValidate()
     {
+        if (woodLog.Length != 4) Array.Resize(ref woodLog, 4);
         if (timesBetweenSpawns.Length != 4) Array.Resize(ref timesBetweenSpawns, 4);
         if (speeds.Length != 4) Array.Resize(ref speeds, 4);
         if (lengths.Length != 4) Array.Resize(ref lengths, 4);
